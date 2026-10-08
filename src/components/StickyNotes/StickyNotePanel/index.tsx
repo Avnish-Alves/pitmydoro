@@ -78,7 +78,9 @@ export const StickyNotePanel = ({ note, label, index, getAnchor }: StickyNotePan
             <FloatingPanel.Header
               borderBottomWidth='1px'
               borderColor={{ base: palette.accent, _dark: palette.accentDark }}
-              bg={note.customColor ? { base: palette.surface, _dark: palette.surfaceDark } : undefined}
+              bg={
+                note.customColor ? { base: palette.surface, _dark: palette.surfaceDark } : undefined
+              }
             >
               <FloatingPanel.DragTrigger
                 flex='1'

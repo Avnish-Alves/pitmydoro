@@ -13,7 +13,9 @@ export const paletteFromHex = (hex: string): StickyNotePalette => {
   const base = tinycolor(hex);
   const surface = base.toHexString();
   const text = tinycolor.mostReadable(base, [DARK_TEXT, '#FFFFFF']).toHexString();
-  const accent = (base.isLight() ? base.clone().darken(15) : base.clone().lighten(20)).toHexString();
+  const accent = (
+    base.isLight() ? base.clone().darken(15) : base.clone().lighten(20)
+  ).toHexString();
   const palette: StickyNotePalette = {
     surface,
     surfaceDark: surface,
