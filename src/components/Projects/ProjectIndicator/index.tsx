@@ -2,6 +2,7 @@
 
 import { Box, BoxProps } from '@chakra-ui/react';
 import { useProjectsStore } from '@/stores/Projects.store';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 import {
   PROJECT_INDICATOR_HEIGHT,
   PROJECT_INDICATOR_THICKNESS,
@@ -13,15 +14,15 @@ interface ProjectIndicatorProps extends BoxProps {
 }
 
 export const ProjectIndicator = ({ projectId, ...rest }: ProjectIndicatorProps) => {
-  const color = useProjectsStore((state) =>
+  const project = useProjectsStore((state) =>
     state.activeProjectId || !projectId
       ? undefined
-      : state.projects.find((item) => item.id === projectId)?.color
+      : state.projects.find((item) => item.id === projectId)
   );
 
-  if (!color) return null;
+  if (!project?.color) return null;
 
-  const palette = PROJECT_PALETTE[color];
+  const palette = resolveNotePalette(project.color, project.customColor, PROJECT_PALETTE);
 
   return (
     <Box

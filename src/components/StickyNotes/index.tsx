@@ -18,6 +18,7 @@ import { useProjectsStore } from '@/stores/Projects.store';
 import { filterByProject } from '@/utils/projects.utils';
 import { sortPinnedFirst } from '@/utils/pin.utils';
 import { useNeutralTabPalette } from '@/hooks/useNeutralTabPalette';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 import { TAB_SLIDE_IN_STAGGER_MS } from '@/constants/Animations';
 import {
   STICKY_NOTE_PANEL_SIZE,
@@ -132,6 +133,7 @@ export const StickyNotes = () => {
       label={resolveLabel(note)}
       ariaLabel={t('open', { label: resolveLabel(note) })}
       color={note.color}
+      palette={note.customColor ? resolveNotePalette(note.color, note.customColor) : undefined}
       height={note.height}
       active={openIds.includes(note.id)}
       indicator={<ProjectIndicator projectId={note.projectId} />}

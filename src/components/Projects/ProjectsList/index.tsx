@@ -55,7 +55,7 @@ const ProjectRow = ({ project, selected, onEdit }: ProjectRowProps) => {
         cursor='pointer'
         textAlign='left'
       >
-        <ProjectColorDot color={project.color} size='12px' />
+        <ProjectColorDot color={project.color} customColor={project.customColor} size='12px' />
         <VStack align='stretch' gap={0} minWidth={0} flex='1'>
           <Text fontSize='sm' fontWeight={selected ? 'bold' : 'semibold'} truncate>
             {resolveName(project)}

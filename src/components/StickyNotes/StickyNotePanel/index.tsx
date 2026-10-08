@@ -6,13 +6,13 @@ import { LuGripVertical, LuX } from 'react-icons/lu';
 import { useTranslations } from 'next-intl';
 import { StickyNote } from '@/interfaces/StickyNote.interface';
 import {
-  STICKY_NOTE_PALETTE,
   STICKY_NOTE_PANEL_CASCADE,
   STICKY_NOTE_PANEL_EDGE,
   STICKY_NOTE_PANEL_MIN_SIZE,
   STICKY_NOTE_PANEL_SIZE,
 } from '@/constants/StickyNotes';
 import { useStickyNotes } from '@/hooks/useStickyNotes';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 import { StickyNoteEditor } from '@/components/StickyNotes/StickyNoteEditor';
 
 interface StickyNotePanelProps {
@@ -44,7 +44,7 @@ export const StickyNotePanel = ({ note, label, index, getAnchor }: StickyNotePan
   const { closeNote } = useStickyNotes();
   const [position, setPosition] = useState(() => initialPosition(getAnchor(), index));
   const [size, setSize] = useState(STICKY_NOTE_PANEL_SIZE);
-  const palette = STICKY_NOTE_PALETTE[note.color];
+  const palette = resolveNotePalette(note.color, note.customColor);
 
   useEffect(() => {
     const handleResize = () => setPosition((current) => clampToViewport(current, size));
@@ -78,6 +78,7 @@ export const StickyNotePanel = ({ note, label, index, getAnchor }: StickyNotePan
             <FloatingPanel.Header
               borderBottomWidth='1px'
               borderColor={{ base: palette.accent, _dark: palette.accentDark }}
+              bg={note.customColor ? { base: palette.surface, _dark: palette.surfaceDark } : undefined}
             >
               <FloatingPanel.DragTrigger
                 flex='1'

@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import { Project } from '@/interfaces/Project.interface';
 import { StickyNoteColor } from '@/interfaces/StickyNote.interface';
 import { PROJECT_PALETTE } from '@/constants/Projects';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 import { useProjects } from '@/hooks/useProjects';
 import { useAlert } from '@/hooks/useAlert';
 import { ColorSwatches } from '@/components/StickyNotes/ColorSwatches';
@@ -27,12 +28,13 @@ export const ProjectEditor = ({ project, isNew = false, onDone, onBack }: Projec
   const [name, setName] = useState(project.name);
   const [description, setDescription] = useState(project.description ?? '');
   const [color, setColor] = useState<StickyNoteColor>(project.color);
+  const [customColor, setCustomColor] = useState(project.customColor);
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
     setSaving(true);
 
-    const draft = { name: name.trim(), description: description.trim(), color };
+    const draft = { name: name.trim(), description: description.trim(), color, customColor };
 
     if (isNew) await addProject(draft);
     else await updateProject(project.id, draft);
@@ -93,10 +95,16 @@ export const ProjectEditor = ({ project, isNew = false, onDone, onBack }: Projec
 
       <ColorSwatches
         value={color}
-        palette={PROJECT_PALETTE[color]}
+        palette={resolveNotePalette(color, customColor, PROJECT_PALETTE)}
         palettes={PROJECT_PALETTE}
         getAriaLabel={(option) => t('colorOption', { color: option })}
-        onChange={setColor}
+        onChange={(option) => {
+          setColor(option);
+          setCustomColor(undefined);
+        }}
+        customColor={customColor}
+        customAriaLabel={t('customColor')}
+        onCustomChange={setCustomColor}
       />
 
       <HStack justifyContent='flex-end' gap={2} paddingTop={2}>

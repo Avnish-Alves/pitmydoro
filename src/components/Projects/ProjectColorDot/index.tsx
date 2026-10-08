@@ -3,19 +3,22 @@
 import { Box } from '@chakra-ui/react';
 import { StickyNoteColor } from '@/interfaces/StickyNote.interface';
 import { PROJECT_INDICATOR_SIZE, PROJECT_PALETTE } from '@/constants/Projects';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 
 interface ProjectColorDotProps {
   color: StickyNoteColor;
+  customColor?: string;
   size?: string;
   title?: string;
 }
 
 export const ProjectColorDot = ({
   color,
+  customColor,
   size = PROJECT_INDICATOR_SIZE,
   title,
 }: ProjectColorDotProps) => {
-  const palette = PROJECT_PALETTE[color];
+  const palette = resolveNotePalette(color, customColor, PROJECT_PALETTE);
 
   return (
     <Box

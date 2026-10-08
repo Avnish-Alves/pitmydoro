@@ -27,6 +27,7 @@ interface ProjectOption {
   value: string;
   label: string;
   color?: StickyNoteColor;
+  customColor?: string;
 }
 
 interface ProjectPickerProps extends Omit<
@@ -41,7 +42,11 @@ interface ProjectPickerProps extends Omit<
 const ProjectOptionLabel = ({ option }: { option: ProjectOption }) => (
   <HStack gap={2} minWidth={0}>
     {option.color ? (
-      <ProjectColorDot color={option.color} size={PROJECT_PICKER_DOT_SIZE} />
+      <ProjectColorDot
+        color={option.color}
+        customColor={option.customColor}
+        size={PROJECT_PICKER_DOT_SIZE}
+      />
     ) : (
       <Box
         width={PROJECT_PICKER_DOT_SIZE}
@@ -78,6 +83,7 @@ export const ProjectPicker = ({
             value: project.id,
             label: resolveName(project),
             color: project.color,
+            customColor: project.customColor,
           })),
         ],
       }),

@@ -5,7 +5,7 @@ import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
 import { LuPlus } from 'react-icons/lu';
 import { useTranslations } from 'next-intl';
 import { StickyNote } from '@/interfaces/StickyNote.interface';
-import { STICKY_NOTE_PALETTE } from '@/constants/StickyNotes';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 import { ProjectIndicator } from '@/components/Projects/ProjectIndicator';
 import { PinButton } from '@/components/PinButton';
 import { useStickyNotesStore } from '@/stores/StickyNotes.store';
@@ -24,7 +24,7 @@ interface NoteRowProps extends Omit<StickyNotesListProps, 'notes' | 'onAdd'> {
 
 const NoteRow = ({ note, resolveLabel, onSelect, onTogglePin }: NoteRowProps) => {
   const t = useTranslations('stickyNotes');
-  const palette = STICKY_NOTE_PALETTE[note.color];
+  const palette = resolveNotePalette(note.color, note.customColor);
 
   return (
     <HStack

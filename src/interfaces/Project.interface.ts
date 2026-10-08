@@ -5,6 +5,7 @@ export interface Project {
   name: string;
   description?: string;
   color: StickyNoteColor;
+  customColor?: string;
   order: number;
   isSync?: boolean;
   pinned?: boolean;

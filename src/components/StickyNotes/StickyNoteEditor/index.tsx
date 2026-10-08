@@ -6,7 +6,7 @@ import { HStack, IconButton, Input, Textarea, VStack } from '@chakra-ui/react';
 import { LuTrash2 } from 'react-icons/lu';
 import { useTranslations } from 'next-intl';
 import { StickyNote } from '@/interfaces/StickyNote.interface';
-import { STICKY_NOTE_PALETTE } from '@/constants/StickyNotes';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 import { useStickyNotes } from '@/hooks/useStickyNotes';
 import { ColorSwatches } from '@/components/StickyNotes/ColorSwatches';
 import { ProjectPicker } from '@/components/Projects/ProjectPicker';
@@ -22,7 +22,8 @@ export const StickyNoteEditor = ({ note, label, onDelete }: StickyNoteEditorProp
   const { updateNote, removeNote } = useStickyNotes();
   const [draftLabel, setDraftLabel] = useState(label);
   const [draftContent, setDraftContent] = useState(note.content);
-  const palette = STICKY_NOTE_PALETTE[note.color];
+  const palette = resolveNotePalette(note.color, note.customColor);
+  const ink = note.customColor ? 'currentColor' : { base: palette.text, _dark: palette.textDark };
 
   const updateRef = useRef(updateNote);
   updateRef.current = updateNote;
@@ -57,7 +58,7 @@ export const StickyNoteEditor = ({ note, label, onDelete }: StickyNoteEditorProp
         value={draftLabel}
         placeholder={t('labelPlaceholder')}
         borderColor={{ base: palette.accent, _dark: palette.accentDark }}
-        _placeholder={{ color: { base: palette.text, _dark: palette.textDark }, opacity: 0.5 }}
+        _placeholder={{ color: ink, opacity: 0.5 }}
         onChange={(event) => {
           setDraftLabel(event.target.value);
           commit(note.id, { label: event.target.value, labelKey: undefined });
@@ -77,7 +78,7 @@ export const StickyNoteEditor = ({ note, label, onDelete }: StickyNoteEditorProp
         fontSize='sm'
         value={draftContent}
         placeholder={t('contentPlaceholder')}
-        _placeholder={{ color: { base: palette.text, _dark: palette.textDark }, opacity: 0.5 }}
+        _placeholder={{ color: ink, opacity: 0.5 }}
         _focusVisible={{ outline: 'none' }}
         onChange={(event) => {
           setDraftContent(event.target.value);
@@ -90,7 +91,10 @@ export const StickyNoteEditor = ({ note, label, onDelete }: StickyNoteEditorProp
         value={note.color}
         palette={palette}
         getAriaLabel={(color) => t('colorOption', { color })}
-        onChange={(color) => void updateNote(note.id, { color })}
+        onChange={(color) => void updateNote(note.id, { color, customColor: undefined })}
+        customColor={note.customColor}
+        customAriaLabel={t('customColor')}
+        onCustomChange={(customColor) => void updateNote(note.id, { customColor })}
       />
 
       <HStack justifyContent='flex-end' gap={2}>
@@ -107,7 +111,7 @@ export const StickyNoteEditor = ({ note, label, onDelete }: StickyNoteEditorProp
           aria-label={t('delete')}
           variant='ghost'
           size='xs'
-          color={{ base: palette.text, _dark: palette.textDark }}
+          color={ink}
           onClick={handleDelete}
         >
           <LuTrash2 />

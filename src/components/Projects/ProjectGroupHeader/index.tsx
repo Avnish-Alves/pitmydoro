@@ -16,7 +16,7 @@ export const ProjectGroupHeader = ({ project, ...rest }: ProjectGroupHeaderProps
 
   return (
     <HStack data-pw-id='project-group-header' gap={2} width='100%' minWidth={0} {...rest}>
-      {project && <ProjectColorDot color={project.color} />}
+      {project && <ProjectColorDot color={project.color} customColor={project.customColor} />}
       <Text
         fontSize='xs'
         fontWeight='semibold'

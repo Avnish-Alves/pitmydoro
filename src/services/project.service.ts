@@ -18,6 +18,7 @@ const toDocument = (project: Project) => ({
   name: project.name,
   description: project.description ?? '',
   color: project.color,
+  customColor: project.customColor ?? null,
   order: project.order,
   pinned: project.pinned ?? false,
 });
@@ -27,6 +28,7 @@ const toProject = (id: string, data: Record<string, unknown>): Project => ({
   name: (data.name as string) ?? '',
   description: (data.description as string) ?? '',
   color: (data.color as Project['color']) ?? PROJECT_DEFAULT_COLOR,
+  customColor: (data.customColor as string) ?? undefined,
   order: (data.order as number) ?? 0,
   pinned: (data.pinned as boolean) ?? false,
   isSync: true,
@@ -48,6 +50,7 @@ export const projectService = {
     if (updates.name !== undefined) payload.name = updates.name;
     if (updates.description !== undefined) payload.description = updates.description;
     if (updates.color !== undefined) payload.color = updates.color;
+    if ('customColor' in updates) payload.customColor = updates.customColor ?? null;
     if (updates.order !== undefined) payload.order = updates.order;
     if (updates.pinned !== undefined) payload.pinned = updates.pinned;
 

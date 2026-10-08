@@ -24,6 +24,7 @@ import {
   PROJECTS_LIST_COLORS,
 } from '@/constants/Projects';
 import { sortPinnedFirst } from '@/utils/pin.utils';
+import { resolveNotePalette } from '@/utils/notePalette.utils';
 import { TAB_SLIDE_IN_STAGGER_MS } from '@/constants/Animations';
 import { ACTIVE_GENERAL_TAB_TEXT_COLOR } from '@/constants/TabColors';
 
@@ -118,7 +119,11 @@ export const Projects = () => {
 
   if (!mounted) return null;
 
-  const fabPalette = PROJECT_PALETTE[activeProject?.color ?? PROJECT_DEFAULT_COLOR];
+  const fabPalette = resolveNotePalette(
+    activeProject?.color ?? PROJECT_DEFAULT_COLOR,
+    activeProject?.customColor,
+    PROJECT_PALETTE
+  );
 
   return (
     <>
@@ -161,6 +166,11 @@ export const Projects = () => {
             label={resolveName(project)}
             ariaLabel={t('open', { name: resolveName(project) })}
             color={project.color}
+            palette={
+              project.customColor
+                ? resolveNotePalette(project.color, project.customColor, PROJECT_PALETTE)
+                : undefined
+            }
             active={project.id === activeProjectId}
             dimmed={project.id !== activeProjectId}
             pinned={!!project.pinned}

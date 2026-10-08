@@ -19,6 +19,7 @@ const toDocument = (note: StickyNote) => ({
   label: note.label ?? null,
   labelKey: note.labelKey ?? null,
   color: note.color,
+  customColor: note.customColor ?? null,
   height: note.height,
   content: note.content,
   order: note.order,
@@ -31,6 +32,7 @@ const toNote = (id: string, data: Record<string, unknown>): StickyNote => ({
   label: (data.label as string) ?? undefined,
   labelKey: (data.labelKey as string) ?? undefined,
   color: data.color as StickyNote['color'],
+  customColor: (data.customColor as string) ?? undefined,
   height: (data.height as number) ?? 46,
   content: (data.content as string) ?? '',
   order: (data.order as number) ?? 0,
@@ -57,6 +59,7 @@ export const stickyNoteService = {
     if ('label' in updates) payload.label = updates.label ?? null;
     if ('labelKey' in updates) payload.labelKey = updates.labelKey ?? null;
     if (updates.color !== undefined) payload.color = updates.color;
+    if ('customColor' in updates) payload.customColor = updates.customColor ?? null;
     if (updates.height !== undefined) payload.height = updates.height;
     if (updates.content !== undefined) payload.content = updates.content;
     if (updates.order !== undefined) payload.order = updates.order;

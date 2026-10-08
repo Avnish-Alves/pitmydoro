@@ -5,6 +5,7 @@ export interface StickyNote {
   label?: string;
   labelKey?: string;
   color: StickyNoteColor;
+  customColor?: string;
   height: number;
   content: string;
   order: number;
